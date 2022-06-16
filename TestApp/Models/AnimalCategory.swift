@@ -11,7 +11,7 @@ import Foundation
 // MARK: Animal category status
 extension AnimalCategory {
     enum AnimalCategoryStatus: String, Codable {
-        case paid, free
+        case paid, free, unavailable
     }
 }
 
@@ -23,8 +23,9 @@ struct AnimalCategory: Identifiable, Codable {
     let description: String
     let imageURLString: String
     let order: Int
-    let status: AnimalCategoryStatus
+    var status: AnimalCategoryStatus
     let content: [AnimalFact]
+    var paid: Bool
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -33,15 +34,17 @@ struct AnimalCategory: Identifiable, Codable {
         case order
         case status
         case content
+        case paid
     }
     
-    init(title: String, description: String, imageURLString: String, order: Int, status: AnimalCategoryStatus, content: [AnimalFact]) {
+    init(title: String, description: String, imageURLString: String, order: Int, status: AnimalCategoryStatus, content: [AnimalFact], paid: Bool) {
         self.title = title
         self.description = description
         self.imageURLString = imageURLString
         self.order = order
         self.status = status
         self.content = content
+        self.paid = paid
     }
     
     init(from decoder: Decoder) throws {
@@ -52,10 +55,13 @@ struct AnimalCategory: Identifiable, Codable {
         imageURLString = try container.decode(String.self, forKey: .imageURLString)
         order = try container.decode(Int.self, forKey: .order)
         content = try container.decodeIfPresent([AnimalFact].self, forKey: .content) ?? []
+        paid = try container.decodeIfPresent(Bool.self, forKey: .paid) ?? false
         
         let statusString = try container.decode(String.self, forKey: .status)
         
-        if let requiredStatus = AnimalCategoryStatus(rawValue: statusString) {
+        if content.isEmpty {
+            status = AnimalCategoryStatus.unavailable
+        } else if let requiredStatus = AnimalCategoryStatus(rawValue: statusString) {
             status = requiredStatus
         } else {
             throw DecodingError.valueNotFound(AnimalCategoryStatus.self,
@@ -72,5 +78,6 @@ struct AnimalCategory: Identifiable, Codable {
         try container.encode(order, forKey: .order)
         try container.encode(content, forKey: .content)
         try container.encode(status.rawValue, forKey: .status)
+        try container.encode(paid, forKey: .paid)
     }
 }

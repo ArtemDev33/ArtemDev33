@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct TestAppApp: App {
+    
+    let viewModelFactory = ViewModelFactory()
+    
     var body: some Scene {
         WindowGroup {
-            AnimalCategoriesView()
+            AnimalCategoriesView(viewModel: viewModelFactory.animalCategoriesViewModel())
         }
     }
 }

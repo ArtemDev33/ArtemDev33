@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct AnimalFact: Codable {
+struct AnimalFact: Identifiable, Codable {
+    let id = UUID()
     let fact: String
     let imageURLString: String
     
