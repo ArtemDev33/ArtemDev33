@@ -9,35 +9,39 @@ import SwiftUI
 
 struct AnimalFactsView: View {
     
-    @StateObject var viewModel: AnimalFactsViewModel
+    @ObservedObject var viewModel: AnimalFactsViewModel
     @State private var tabSelection = 0
         
     var body: some View {
-        VStack {
-            TabView(selection: $tabSelection) {
-                ForEach(viewModel.facts.indices, id: \.self) { index in
-                    SingleFactView(
-                        fact: viewModel.facts[index],
-                        totalFactsCount: viewModel.facts.count,
-                        tabSelection: $tabSelection)
-                        .tag(index)
-                }
+        
+        if viewModel.factsLocation == .local, viewModel.facts.isEmpty {
+            VStack(spacing: 16) {
+                Image(systemName: "sparkle.magnifyingglass")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                
+                Text("No facts are saved yet. Browse categories to do it! ")
+                    .font(.system(size: 30, weight: .semibold, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .padding([.leading, .trailing], 20)
             }
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-            .frame(height: 580)
-            
-            Spacer()
-        }.padding(.top, 5)
-    }
-}
-
-
-struct AnimalFactsView_Previews: PreviewProvider {
-    static var previews: some View {
-        AnimalFactsView(viewModel: AnimalFactsViewModel(facts: [
-            AnimalFact(fact: "sfgjnfdnjlg", imageURLString: "fknsjgnksfng"),
-            AnimalFact(fact: "sfgjnfdnjlg", imageURLString: "fknsjgnksfng")
-        ]))
+        } else {
+            VStack {
+                TabView(selection: $tabSelection) {
+                    ForEach(viewModel.facts.indices, id: \.self) { index in
+                        SingleFactView(
+                            viewModel: viewModel.singleFactViewModel(fact: viewModel.facts[index]),
+                            tabSelection: $tabSelection)
+                        .tag(index)
+                    }
+                }
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                .frame(height: 580)
+                
+                Spacer()
+                
+            }.padding(.top, 5)
+        }
     }
 }

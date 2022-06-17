@@ -37,8 +37,8 @@ final class AnimalCategoriesViewModel: ObservableObject {
                 case .finished:
                     break
                 }
-            }) { categories in
-                self.categories = categories.sorted(by: { $0.order < $1.order })
+            }) { [weak self] categories in
+                self?.categories = categories.sorted(by: { $0.order < $1.order })
             }.store(in: &cancellables)
     }
     
@@ -48,7 +48,7 @@ final class AnimalCategoriesViewModel: ObservableObject {
     
     func updateWatchedAdStatus(categoryTitle: String) {
         if let index = categories.firstIndex(where: { $0.title == categoryTitle }) {
-            categories[index].paid = true
+            categories[index].didWatchAD = true
         }
     }
 }

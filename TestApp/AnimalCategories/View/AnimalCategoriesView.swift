@@ -14,38 +14,60 @@ struct AnimalCategoriesView: View {
     @State var showAD = false
     @State var showAlert = false
     @State var alertInfo: AlertInfo?
-                
+                    
     var body: some View {
         
         ZStack {
             NavigationView {
-                ZStack {
-                    List {
-                        ForEach($viewModel.categories) { category in
-                            row(category: category)
+                VStack {
+                    
+                    NavigationLink(destination: AnimalFactsView(viewModel: viewModel.animalFactsViewModel(facts: []))
+                        .navigationTitle("Favourite")
+                    ) {
+                        HStack {
+                            Spacer()
+                            Text("Favourite")
+                                .padding(.trailing, 32)
+                                .font(.system(size: 22, weight: .semibold, design: .rounded))
                         }
                     }
                     
-                    .alert(
-                        alertInfo?.title ?? "",
-                        isPresented: $showAlert,
-                        presenting: alertInfo,
-                        actions: { info in
-                            switch info.useCase {
-                            case .paid:
-                                Button("Cancel", role: .cancel, action: {})
-                                Button("Watch Ad", action: {
-                                    self.showAD(categoryTitle: alertInfo?.title ?? "")
-                                })
-                            case .unavailable:
-                                Button("OK", action: {})
+                    ZStack {
+                        List {
+                            ForEach($viewModel.categories) { category in
+                                row(category: category)
                             }
-                        })
-                    
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
-                }.navigationTitle("Categories")
+                        }
+                        .alert(
+                            alertInfo?.title ?? "",
+                            isPresented: $showAlert,
+                            presenting: alertInfo,
+                            actions: { info in
+                                switch info.useCase {
+                                case .paid:
+                                    Button("Cancel", role: .cancel, action: {})
+                                    Button("Watch Ad", action: {
+                                        self.showAD(categoryTitle: alertInfo?.title ?? "")
+                                    })
+                                case .unavailable:
+                                    Button("OK", action: {})
+                                }
+                            }, message: { info in
+                                Text(info.message)
+                            })
+                        
+                        if viewModel.isLoading {
+                            ZStack {
+                                Color.black
+                                    .opacity(0.2)
+                                ProgressView()
+                                    .tint(.white)
+                                    .scaleEffect(2)
+                            }
+                        }
+                        
+                    }.navigationTitle("Categories")
+                }
             }
             
             if showAD {
@@ -71,7 +93,7 @@ private extension AnimalCategoriesView {
     func showAD(categoryTitle: String) {
         showAD = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.showAD = false
+            showAD = false
             viewModel.updateWatchedAdStatus(categoryTitle: categoryTitle)
         }
     }
@@ -82,7 +104,7 @@ private extension AnimalCategoriesView {
         case .free:
             ZStack {
                 AnimalCategoryCell(category: category.wrappedValue)
-                NavigationLink(destination: AnimalFactsView(viewModel: AnimalFactsViewModel(facts: category.wrappedValue.content))
+                NavigationLink(destination: AnimalFactsView(viewModel: viewModel.animalFactsViewModel(facts: category.wrappedValue.content))
                     .navigationTitle(category.wrappedValue.title)
                 ) {
                     EmptyView()
@@ -92,7 +114,7 @@ private extension AnimalCategoriesView {
         case .paid:
             ZStack {
                 NavigationLink(
-                    isActive: category.paid) {
+                    isActive: category.didWatchAD) {
                         AnimalFactsView(viewModel: viewModel.animalFactsViewModel(facts: category.wrappedValue.content))
                             .navigationTitle(category.wrappedValue.title)
                     } label: {
@@ -101,7 +123,7 @@ private extension AnimalCategoriesView {
                 
                 AnimalCategoryCell(category: category.wrappedValue)
                     .onTapGesture {
-                        self.alertInfo = AlertInfo(title: category.wrappedValue.title, useCase: .paid)
+                        alertInfo = AlertInfo(title: category.wrappedValue.title, message: "Watch AD to continue!", useCase: .paid)
                         showAlert.toggle()
                     }
             }
@@ -109,15 +131,9 @@ private extension AnimalCategoriesView {
         case .unavailable:
             AnimalCategoryCell(category: category.wrappedValue)
                 .onTapGesture {
-                    self.alertInfo = AlertInfo(title: category.wrappedValue.title, useCase: .unavailable)
+                    alertInfo = AlertInfo(title: category.wrappedValue.title, message: "Coming soon!", useCase: .unavailable)
                     showAlert.toggle()
                 }
         }
     }
 }
-
-//struct AnimalCategoriesView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AnimalCategoriesView()
-//    }
-//}

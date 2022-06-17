@@ -9,14 +9,14 @@ import SwiftUI
 import Kingfisher
 
 struct SingleFactView: View {
-    
-    var fact: AnimalFact
-    var totalFactsCount: Int
-    
+            
+    @ObservedObject var viewModel: SingleFactViewModel
     @Binding var tabSelection: Int
+    
+    @State var enableSaveButton = false
         
     private var isLastFact: Bool {
-        tabSelection == totalFactsCount - 1
+        tabSelection == viewModel.totalFactsCount - 1
     }
     private var isFirstFact: Bool {
         tabSelection == 0
@@ -29,16 +29,10 @@ struct SingleFactView: View {
                 Color(uiColor: UIColor(red: 243/255, green: 242/255, blue: 247/255, alpha: 1))
                                 
                 VStack(alignment: .center, spacing: 10) {
+
+                    imageView(geometry: geo)
                     
-                    KFImage.url(URL(string: fact.imageURLString))
-                        .placeholder { ProgressView() }
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geo.size.width - 64, height: 250)
-                        .clipShape(RoundedRectangle(cornerRadius: 9))
-                        .padding(.top, 16)
-                    
-                    Text(fact.fact)
+                    Text(viewModel.fact.fact)
                         .font(.system(size: 17, weight: .semibold, design: .rounded))
                         .padding(.top, 5)
                         .multilineTextAlignment(.center)
@@ -47,7 +41,7 @@ struct SingleFactView: View {
                     
                     HStack {
                         Button {
-                            self.tabSelection -= 1
+                            tabSelection -= 1
                         } label: {
                             Image(systemName: "chevron.backward.circle")
                                 .resizable()
@@ -58,8 +52,20 @@ struct SingleFactView: View {
                         
                         Spacer()
                         
+                        if viewModel.factsLocation == .remote {
+                            Button { [weak viewModel] in
+                                viewModel?.addFactToDB()
+                            } label: {
+                                Text("Save")
+                                    .font(.system(size: 22, weight: .semibold, design: .rounded))
+                            }
+                            .disabled(!enableSaveButton)
+                            
+                            Spacer()
+                        }
+                        
                         Button {
-                            self.tabSelection += 1
+                            tabSelection += 1
                         } label: {
                             Image(systemName: "chevron.forward.circle")
                                 .resizable()
@@ -80,8 +86,32 @@ struct SingleFactView: View {
     }
 }
 
-//struct SingleFactView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SingleFactView(fact: AnimalFact(fact: "sdfjbsdkjnfkjsd", imageURLString: "lskdnglfngljfjg"))
-//    }
-//}
+// MARK: - Private
+private extension SingleFactView {
+    
+    @ViewBuilder func imageView(geometry: GeometryProxy) -> some View {
+        
+        if viewModel.factsLocation == .remote {
+            KFImage.url(URL(string: viewModel.fact.imageURLString))
+                .placeholder { ProgressView() }
+                .onSuccess { [weak viewModel] result in
+                    viewModel?.loadedImage = result.image
+                    enableSaveButton = true
+                }
+                .resizable()
+                .scaledToFill()
+                .frame(width: geometry.size.width - 64, height: 250)
+                .clipShape(RoundedRectangle(cornerRadius: 9))
+                .padding(.top, 16)
+        } else if let image = viewModel.loadedImage {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: geometry.size.width - 64, height: 250)
+                .clipShape(RoundedRectangle(cornerRadius: 9))
+                .padding(.top, 16)
+        } else {
+            EmptyView()
+        }
+    }
+}

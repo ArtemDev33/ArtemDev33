@@ -15,5 +15,6 @@ extension AlertInfo {
 
 struct AlertInfo {
     var title: String
+    var message: String
     var useCase: AlertUseCase
 }

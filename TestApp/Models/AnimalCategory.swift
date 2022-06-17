@@ -25,7 +25,7 @@ struct AnimalCategory: Identifiable, Codable {
     let order: Int
     var status: AnimalCategoryStatus
     let content: [AnimalFact]
-    var paid: Bool
+    var didWatchAD: Bool
     
     enum CodingKeys: String, CodingKey {
         case title
@@ -34,17 +34,17 @@ struct AnimalCategory: Identifiable, Codable {
         case order
         case status
         case content
-        case paid
+        case didWatchAD
     }
     
-    init(title: String, description: String, imageURLString: String, order: Int, status: AnimalCategoryStatus, content: [AnimalFact], paid: Bool) {
+    init(title: String, description: String, imageURLString: String, order: Int, status: AnimalCategoryStatus, content: [AnimalFact], didWatchAD: Bool) {
         self.title = title
         self.description = description
         self.imageURLString = imageURLString
         self.order = order
         self.status = status
         self.content = content
-        self.paid = paid
+        self.didWatchAD = didWatchAD
     }
     
     init(from decoder: Decoder) throws {
@@ -55,7 +55,7 @@ struct AnimalCategory: Identifiable, Codable {
         imageURLString = try container.decode(String.self, forKey: .imageURLString)
         order = try container.decode(Int.self, forKey: .order)
         content = try container.decodeIfPresent([AnimalFact].self, forKey: .content) ?? []
-        paid = try container.decodeIfPresent(Bool.self, forKey: .paid) ?? false
+        didWatchAD = try container.decodeIfPresent(Bool.self, forKey: .didWatchAD) ?? false
         
         let statusString = try container.decode(String.self, forKey: .status)
         
@@ -78,6 +78,6 @@ struct AnimalCategory: Identifiable, Codable {
         try container.encode(order, forKey: .order)
         try container.encode(content, forKey: .content)
         try container.encode(status.rawValue, forKey: .status)
-        try container.encode(paid, forKey: .paid)
+        try container.encode(didWatchAD, forKey: .didWatchAD)
     }
 }
