@@ -47,7 +47,7 @@ struct AnimalCategoriesView: View {
                                 case .paid:
                                     Button("Cancel", role: .cancel, action: {})
                                     Button("Watch Ad", action: {
-                                        self.showAD(categoryTitle: alertInfo?.title ?? "")
+                                        showAD(categoryTitle: alertInfo?.title ?? "")
                                     })
                                 case .unavailable:
                                     Button("OK", action: {})

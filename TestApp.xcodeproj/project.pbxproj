@@ -24,6 +24,7 @@
 		71718E04285BB4D80074EA85 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71718E03285BB4D80074EA85 /* StorageManager.swift */; };
 		71718E06285BC6660074EA85 /* SingleFactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71718E05285BC6660074EA85 /* SingleFactViewModel.swift */; };
 		71718E08285BD4200074EA85 /* FactsLocationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71718E07285BD4200074EA85 /* FactsLocationState.swift */; };
+		71718E0A285C7F920074EA85 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71718E09285C7F920074EA85 /* ColorExtension.swift */; };
 		717A0A9B2858F29100A451D0 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717A0A9A2858F29100A451D0 /* APIError.swift */; };
 		717A0A9D2858F2F900A451D0 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717A0A9C2858F2F900A451D0 /* NetworkService.swift */; };
 		717A0A9F2858F4C600A451D0 /* AnimalsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717A0A9E2858F4C600A451D0 /* AnimalsEndpoint.swift */; };
@@ -49,6 +50,7 @@
 		71718E03285BB4D80074EA85 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		71718E05285BC6660074EA85 /* SingleFactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleFactViewModel.swift; sourceTree = "<group>"; };
 		71718E07285BD4200074EA85 /* FactsLocationState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactsLocationState.swift; sourceTree = "<group>"; };
+		71718E09285C7F920074EA85 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		717A0A9A2858F29100A451D0 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		717A0A9C2858F2F900A451D0 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		717A0A9E2858F4C600A451D0 /* AnimalsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimalsEndpoint.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			children = (
 				71718DF3285B2D650074EA85 /* AlertItem.swift */,
 				71718E07285BD4200074EA85 /* FactsLocationState.swift */,
+				71718E09285C7F920074EA85 /* ColorExtension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -318,6 +321,7 @@
 				71718DFA285B904B0074EA85 /* AppAssembly.swift in Sources */,
 				717A0AA12858F60000A451D0 /* AnimalsNetworkService.swift in Sources */,
 				714D09232858C488001B7302 /* AnimalCategory.swift in Sources */,
+				71718E0A285C7F920074EA85 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,7 +378,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -428,7 +432,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

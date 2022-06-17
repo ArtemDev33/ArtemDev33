@@ -26,7 +26,8 @@ struct SingleFactView: View {
         
         GeometryReader { geo in
             ZStack {
-                Color(uiColor: UIColor(red: 243/255, green: 242/255, blue: 247/255, alpha: 1))
+                
+                Color.lightGray
                                 
                 VStack(alignment: .center, spacing: 10) {
 

@@ -66,9 +66,3 @@ struct AnimalCategoryCell: View {
         }.frame(height: 100)
     }
 }
-
-struct AnimalCategoryCell_Previews: PreviewProvider {
-    static var previews: some View {
-        AnimalCategoryCell(category: AnimalCategory(title: "Sgsfg", description: "sfgsdgf", imageURLString: "fsgsfg", order: 3, status: .free, content: [], didWatchAD: false))
-    }
-}

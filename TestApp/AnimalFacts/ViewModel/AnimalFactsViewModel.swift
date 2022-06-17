@@ -10,7 +10,7 @@ import Combine
 
 final class AnimalFactsViewModel: ObservableObject {
     
-    let storageManager: StorageManager
+    private let storageManager: StorageManager
     private let viewModelFactory: ViewModelFactory
     
     let factsLocation: FactsLocationState
